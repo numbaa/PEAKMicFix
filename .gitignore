@@ -1,0 +1,6 @@
+bin/
+obj/
+common/artifacts/
+Common/decompiled/
+.vs/
+*.user

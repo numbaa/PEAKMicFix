@@ -1,0 +1,64 @@
+<Project>
+  <!--
+    Shared MSBuild props for all PEAK BepInEx plugin projects.
+    Each plugin project should <Import Project="../../common/Build.props"/> (path relative to the plugin).
+    Resolves references to the game and BepInEx from env vars / defaults.
+  -->
+
+  <PropertyGroup>
+    <!-- Default the game paths from env var or well-known location. -->
+    <PEAK_GAME Condition="'$(PEAK_GAME)' == ''">C:\Users\ntu\game\Steam\steamapps\common\PEAK</PEAK_GAME>
+    <PEAK_MANAGED Condition="'$(PEAK_MANAGED)' == ''">$(PEAK_GAME)\PEAK_Data\Managed</PEAK_MANAGED>
+    <PEAK_BEPINEX_CORE Condition="'$(PEAK_BEPINEX_CORE)' == ''">$(PEAK_GAME)\BepInEx\core</PEAK_BEPINEX_CORE>
+    <PEAK_COMMON>$(MSBuildThisFileDirectory)</PEAK_COMMON>
+
+    <!-- netstandard2.1 matches the existing PEAK mods (Piggyback etc.). -->
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <!-- Do not try to copy BepInEx/game dependencies into output. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <DebugType>embedded</DebugType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- BepInEx runtime references -->
+    <Reference Include="BepInEx">
+      <HintPath>$(PEAK_BEPINEX_CORE)\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(PEAK_BEPINEX_CORE)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Common Unity references -->
+    <Reference Include="UnityEngine">
+      <HintPath>$(PEAK_MANAGED)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(PEAK_MANAGED)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(PEAK_MANAGED)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(PEAK_MANAGED)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+    Convenience entry: a plugin may reference the shared common library by importing
+    common/PeakModding.Common as a project reference automatically. Disable with
+    <UsePeakCommon>false</UsePeakCommon> if not needed.
+    The common library must PROJECT-REFERENCE the game dlls itself (it has no extra deps beyond this file).
+  -->
+</Project>

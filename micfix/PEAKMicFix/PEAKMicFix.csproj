@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common\Build.props" />
+
+  <PropertyGroup>
+    <AssemblyName>PEAKMicFix</AssemblyName>
+    <RootNamespace>PeakMicFix</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The shared watcher source is compiled directly into this plugin so the plugin ships as a
+         single DLL. Any mod that wants the watcher includes these files the same way. -->
+    <Compile Include="..\..\common\PeakModding.Common\Audio\MicrophoneDeviceWatcher.cs" />
+  </ItemGroup>
+
+  <!-- Game / Photon Voice references specific to this plugin. -->
+  <ItemGroup>
+    <Reference Include="PhotonVoice">
+      <HintPath>$(PEAK_MANAGED)\PhotonVoice.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PhotonVoice.API">
+      <HintPath>$(PEAK_MANAGED)\PhotonVoice.API.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(PEAK_MANAGED)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Character derives from MonoBehaviourPun (PhotonUnityNetworking.dll); MicrophoneSetting
+         derives from Zorro.Settings.Setting (Zorro.Settings.Runtime.dll). -->
+    <Reference Include="PhotonUnityNetworking">
+      <HintPath>$(PEAK_MANAGED)\PhotonUnityNetworking.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Zorro.Settings.Runtime">
+      <HintPath>$(PEAK_MANAGED)\Zorro.Settings.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
